@@ -1,0 +1,34 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .dashboard-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .dashboard-card {
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    padding: 20px;
+    flex: 1;
+    min-width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+  }
+  .dashboard-card:hover{
+    background-color: #84aeda69;
+  }
+  .dashboard-card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+  }
+  
+  .dashboard-card p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3498db;
+    margin: 10px 0 0;
+  }
