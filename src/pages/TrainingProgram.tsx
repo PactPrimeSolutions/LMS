@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ChevronRight, Pencil, Plus, Play, Download, Trash } from 'lucide-react'
+import { ChevronRight, Play, Download } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
 interface Course {
@@ -66,8 +66,6 @@ export default function TrainingProgram() {
     fetchCourseDetails()
   }, [id])
 
-  const isAdmin = true // Replace with actual user role check
-
   if (!course) {
     return <div>Loading...</div>
   }
@@ -95,25 +93,7 @@ export default function TrainingProgram() {
       </nav>
 
       <div className="flex flex-wrap gap-4 mb-8">
-        {isAdmin && (
-          <button className="bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 font-bold py-2 px-4 rounded inline-flex items-center">
-            <Pencil className="w-4 h-4 mr-2" />
-            Edit course
-          </button>
-        )}
-        {isAdmin && (
-          <>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-              <Plus className="w-4 h-4 mr-2" />
-              Upload new file
-            </button>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-              <Plus className="w-4 h-4 mr-2" />
-              Upload new video
-            </button>
-          </>
-        )}
-        <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded inline-flex items-center ml-auto">
+        <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded inline-flex items-center ml-0">
           <Play className="w-4 h-4 mr-2" />
           Take a Quiz
         </button>
@@ -132,8 +112,6 @@ export default function TrainingProgram() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Video Title</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uploaded Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Get Started</th>
-                  {isAdmin && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -148,46 +126,22 @@ export default function TrainingProgram() {
                         </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{video.timestamp}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button className="bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 font-bold py-1 px-3 rounded inline-flex items-center text-sm">
+                      <td className="px-6 py-4 whitespace-nowrap" colSpan={2}>
+                        <button className=" bg-green-500 text-white border border-gray-300  font-bold py-1 px-3 rounded inline-flex items-center text-sm">
                           <Play className="w-4 h-4 mr-2" />
                           Play now
                         </button>
                       </td>
-                      {isAdmin && (
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button className="text-indigo-600 hover:text-indigo-900">
-                              <Pencil className="w-4 h-4" />
-                            </button>
-                            <button className="text-red-600 hover:text-red-900">
-                              <Trash className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      )}
                     </tr>
                     {files.filter(file => file.id === video.id).map((file) => (
                       <tr key={`doc-${file.id}`} className="bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                        <td className="px-6 py-4 whitespace-nowrap" colSpan={3}>
+                        <td className="px-6 py-4 whitespace-nowrap" colSpan={4}>
                           <Link to={`/files/${file.id}`} className="text-blue-600 hover:text-blue-900 flex items-center">
                             <Download className="w-4 h-4 mr-2" />
                             {file.title}
                           </Link>
                         </td>
-                        {isAdmin && (
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div className="flex space-x-2">
-                              <button className="text-indigo-600 hover:text-indigo-900">
-                                <Pencil className="w-4 h-4" />
-                              </button>
-                              <button className="text-red-600 hover:text-red-900">
-                                <Trash className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </td>
-                        )}
                       </tr>
                     ))}
                   </React.Fragment>

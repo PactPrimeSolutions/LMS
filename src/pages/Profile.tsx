@@ -9,13 +9,11 @@ import {
   PenSquare, 
   Lock,
   Home,
-  X,
-  UserPlus
+  X
 } from 'lucide-react';
 
-export default function Component() {
+const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isAddingEmployee, setIsAddingEmployee] = useState(false);
   const [user, setUser] = useState({
     is_authenticated: true,
     is_lecturer: true,
@@ -35,17 +33,13 @@ export default function Component() {
     gender: "Male"
   });
 
-  const [newEmployee, setNewEmployee] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: ''
-  });
-
   const [courses, setCourses] = useState([
     { id: 1, title: "Introduction to React", get_absolute_url: "#" },
     { id: 2, title: "Advanced JavaScript", get_absolute_url: "#" },
   ]);
+
+  const [currentSemester, setCurrentSemester] = useState("Fall");
+  const [currentSession, setCurrentSession] = useState("2023");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -55,25 +49,11 @@ export default function Component() {
     }));
   };
 
-  const handleNewEmployeeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewEmployee(prevEmployee => ({
-      ...prevEmployee,
-      [name]: value
-    }));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Here you would typically send the updated user data to your backend
     console.log('Updated user data:', user);
     setIsEditing(false);
-  };
-
-  const handleAddEmployee = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('New employee data:', newEmployee);
-    setIsAddingEmployee(false);
-    setNewEmployee({ first_name: '', last_name: '', email: '', password: '' });
   };
 
   if (!user.is_authenticated) {
@@ -81,7 +61,7 @@ export default function Component() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white">
+    <div className="min-h-800 bg-gradient-to-b from-blue-100 to-white">
       <div className="container mx-auto p-4">
         <nav className="flex items-center text-sm font-medium text-gray-500 mb-4">
           <a href="/profile" className="hover:text-blue-600 flex items-center">
@@ -109,12 +89,6 @@ export default function Component() {
                 </ul>
                 <div className="space-y-2">
                   <button 
-                    onClick={() => setIsAddingEmployee(!isAddingEmployee)} 
-                    className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 flex items-center justify-center"
-                  >
-                    <UserPlus className="w-4 h-4 mr-2" /> Add Employee
-                  </button>
-                  <button 
                     onClick={() => setIsEditing(!isEditing)} 
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center"
                   >
@@ -128,6 +102,9 @@ export default function Component() {
                       </>
                     )}
                   </button>
+                  {/* <button className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 transition duration-300 flex items-center justify-center">
+                    <Lock className="w-4 h-4 mr-2" /> Change Password
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -136,62 +113,7 @@ export default function Component() {
           <div className="md:col-span-2">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="p-6 space-y-6">
-                {isAddingEmployee ? (
-                  <form onSubmit={handleAddEmployee} className="space-y-4">
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">Add New Employee</h3>
-                    <div>
-                      <label htmlFor="new_first_name" className="block text-sm font-medium text-gray-700">First Name</label>
-                      <input
-                        type="text"
-                        id="new_first_name"
-                        name="first_name"
-                        value={newEmployee.first_name}
-                        onChange={handleNewEmployeeInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="new_last_name" className="block text-sm font-medium text-gray-700">Last Name</label>
-                      <input
-                        type="text"
-                        id="new_last_name"
-                        name="last_name"
-                        value={newEmployee.last_name}
-                        onChange={handleNewEmployeeInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="new_email" className="block text-sm font-medium text-gray-700">Email</label>
-                      <input
-                        type="email"
-                        id="new_email"
-                        name="email"
-                        value={newEmployee.email}
-                        onChange={handleNewEmployeeInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="new_password" className="block text-sm font-medium text-gray-700">Password</label>
-                      <input
-                        type="password"
-                        id="new_password"
-                        name="password"
-                        value={newEmployee.password}
-                        onChange={handleNewEmployeeInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        required
-                      />
-                    </div>
-                    <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
-                      Add Employee
-                    </button>
-                  </form>
-                ) : isEditing ? (
+                {isEditing ? (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -315,9 +237,7 @@ export default function Component() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <p><strong>Email:</strong> {user.email}</p>
                         <p><strong>Phone No.:</strong> {user.phone}</p>
-                        <p><strong>Address:</strong> 
-                          {user.address}
-                        </p>
+                        <p><strong>Address:</strong> {user.address}</p>
                       </div>
                     </div>
 
@@ -339,4 +259,6 @@ export default function Component() {
       </div>
     </div>
   );
-}
+};
+
+export default Profile;
